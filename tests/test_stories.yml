@@ -1,0 +1,156 @@
+
+version: "3.1"
+
+stories:
+- story: test prenotazione completa valida
+  steps:
+  - user: |
+      ciao
+    intent: greet
+  - action: utter_greet
+  - user: |
+      vorrei prenotare un tavolo
+    intent: book_restaurant
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - user: |
+      Mario Rossi
+    intent: provide_name
+  - action: restaurant_form
+  - user: |
+      mario.rossi@email.com
+    intent: provide_email
+  - action: restaurant_form
+  - user: |
+      3401234567
+    intent: provide_phone
+  - action: restaurant_form
+  - user: |
+      25/12/2025
+    intent: provide_date
+  - action: restaurant_form
+  - user: |
+      20:00
+    intent: provide_time
+  - action: restaurant_form
+  - user: |
+      2
+    intent: provide_guests
+  - action: restaurant_form
+  - active_loop: null
+  - action: action_submit_reservation
+  - user: |
+      grazie ciao
+    intent: goodbye
+  - action: utter_goodbye
+
+- story: test validazione email errata
+  steps:
+  - user: |
+      prenotazione
+    intent: book_restaurant
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - user: |
+      Luca
+    intent: provide_name
+  - action: restaurant_form
+  - user: |
+      email-sbagliata
+    intent: provide_email
+  - action: restaurant_form
+  - user: |
+      luca@email.com
+    intent: provide_email
+  - action: restaurant_form
+
+- story: test interruzione form
+  steps:
+  - user: |
+      prenotazione tavolo
+    intent: book_restaurant
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - user: |
+      Anna
+    intent: provide_name
+  - action: restaurant_form
+  - user: |
+      stop
+    intent: stop
+  - action: action_deactivate_loop
+  - active_loop: null
+
+- story: test prenotazione con informazioni iniziali
+  steps:
+  - user: |
+      tavolo per 4 persone
+    intent: book_restaurant
+    entities:
+    - number_of_guests: "4"
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - user: |
+      Francesco Bianchi
+    intent: provide_name
+  - action: restaurant_form
+
+- story: test validazione data passata
+  steps:
+  - user: |
+      prenotazione
+    intent: book_restaurant
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - user: |
+      Test User
+    intent: provide_name
+  - action: restaurant_form
+  - user: |
+      test@email.com
+    intent: provide_email
+  - action: restaurant_form
+  - user: |
+      3401234567
+    intent: provide_phone
+  - action: restaurant_form
+  - user: |
+      01/01/2020
+    intent: provide_date
+  - action: restaurant_form
+  - user: |
+      25/12/2025
+    intent: provide_date
+  - action: restaurant_form
+
+- story: test orario non valido
+  steps:
+  - user: |
+      prenotazione
+    intent: book_restaurant
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - user: |
+      Test User
+    intent: provide_name
+  - action: restaurant_form
+  - user: |
+      test@email.com
+    intent: provide_email
+  - action: restaurant_form
+  - user: |
+      3401234567
+    intent: provide_phone
+  - action: restaurant_form
+  - user: |
+      25/12/2025
+    intent: provide_date
+  - action: restaurant_form
+  - user: |
+      15:00
+    intent: provide_time
+  - action: restaurant_form
+  - user: |
+      19:30
+    intent: provide_time
+  - action: restaurant_form

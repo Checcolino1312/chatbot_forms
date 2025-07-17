@@ -1,0 +1,143 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - book_restaurant
+  - provide_name
+  - provide_email
+  - provide_phone
+  - provide_date
+  - provide_time
+  - provide_guests
+  - stop
+  - restart
+
+entities:
+  - name
+  - email
+  - phone
+  - date
+  - time
+  - number_of_guests
+
+slots:
+  customer_name:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: restaurant_form
+        requested_slot: customer_name
+
+  customer_email:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: restaurant_form
+        requested_slot: customer_email
+
+  customer_phone:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: restaurant_form
+        requested_slot: customer_phone
+
+  reservation_date:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: restaurant_form
+        requested_slot: reservation_date
+
+  reservation_time:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: restaurant_form
+        requested_slot: reservation_time
+
+  number_of_guests:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: restaurant_form
+        requested_slot: number_of_guests
+
+responses:
+  utter_greet:
+  - text: "Ciao! Benvenuto al Ristorante Bella Vista! Come posso aiutarti oggi?"
+
+  utter_goodbye:
+  - text: "Arrivederci! Speriamo di vederti presto al nostro ristorante!"
+
+  utter_ask_customer_name:
+  - text: "Perfetto! Iniziamo con la prenotazione. Come ti chiami?"
+
+  utter_ask_customer_email:
+  - text: "Grazie {customer_name}! Puoi fornirmi la tua email per confermare la prenotazione?"
+
+  utter_ask_customer_phone:
+  - text: "Ottimo! Ora ho bisogno del tuo numero di telefono per contattarti in caso di necessità."
+
+  utter_ask_reservation_date:
+  - text: "Per quale data vorresti prenotare? (formato: gg/mm/aaaa)"
+
+  utter_ask_reservation_time:
+  - text: "A che ora preferiresti cenare? (formato: hh:mm)"
+
+  utter_ask_number_of_guests:
+  - text: "Per quante persone sarà la prenotazione?"
+
+  utter_reservation_confirmed:
+  - text: "Perfetto {customer_name}! La tua prenotazione è confermata:\n
+          📅 Data: {reservation_date}\n
+          🕐 Ora: {reservation_time}\n
+          👥 Persone: {number_of_guests}\n
+          📧 Email: {customer_email}\n
+          📞 Telefono: {customer_phone}\n\n
+          Riceverai una conferma via email. Grazie per aver scelto il Ristorante Bella Vista!"
+
+  utter_invalid_email:
+  - text: "L'email che hai inserito non sembra valida. Puoi riprovare? (esempio: nome@dominio.com)"
+
+  utter_invalid_phone:
+  - text: "Il numero di telefono deve contenere almeno 10 cifre. Puoi riprovare?"
+
+  utter_invalid_date:
+  - text: "La data deve essere nel formato gg/mm/aaaa e non può essere nel passato. Puoi riprovare?"
+
+  utter_invalid_time:
+  - text: "L'orario deve essere nel formato hh:mm e tra le 18:00 e le 23:00. Puoi riprovare?"
+
+  utter_invalid_guests:
+  - text: "Il numero di ospiti deve essere tra 1 e 12. Quante persone saranno?"
+
+  utter_restaurant_full:
+  - text: "Mi dispiace, ma per quella data e ora siamo al completo. Puoi scegliere un altro orario?"
+
+actions:
+  - validate_restaurant_form
+  - action_submit_reservation
+
+forms:
+  restaurant_form:
+    required_slots:
+      - customer_name
+      - customer_email
+      - customer_phone
+      - reservation_date
+      - reservation_time
+      - number_of_guests
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

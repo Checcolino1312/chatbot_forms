@@ -1,0 +1,4 @@
+rasa==3.6.13
+rasa-sdk>=3.6.2,<3.7.0
+spacy>=3.4.0,<3.8
+https://github.com/explosion/spacy-models/releases/download/it_core_news_sm-3.7.0/it_core_news_sm-3.7.0-py3-none-any.whl

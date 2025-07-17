@@ -1,0 +1,23 @@
+# Configurazione degli endpoints per Rasa
+
+# Server delle custom actions
+action_endpoint:
+  url: "http://localhost:5055/webhook"
+
+# Tracker store (opzionale - per persistenza)
+# tracker_store:
+#   type: SQL
+#   dialect: "sqlite"
+#   url: "sqlite:///tracker.db"
+
+# Event broker (opzionale - per eventi)
+# event_broker:
+#   type: "pika"
+#   url: "localhost"
+#   username: "guest"
+#   password: "guest"
+#   queue: "rasa_events"
+
+# Model server (opzionale - per modelli remoti)
+# model_server:
+#   url: "http://localhost:5000"

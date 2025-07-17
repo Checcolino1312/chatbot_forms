@@ -1,0 +1,42 @@
+version: "3.1"
+
+rules:
+
+- rule: Attiva form prenotazione ristorante
+  steps:
+  - intent: book_restaurant
+  - action: restaurant_form
+  - active_loop: restaurant_form
+
+- rule: Sottometti form prenotazione quando completo
+  condition:
+  - active_loop: restaurant_form
+  steps:
+  - action: restaurant_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_submit_reservation
+
+- rule: Gestisci saluti
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: Gestisci addii  
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Interrompi form attivo
+  condition:
+  - active_loop: restaurant_form
+  steps:
+  - intent: stop
+  - action: action_deactivate_loop
+  - active_loop: null
+
+- rule: Riavvia conversazione
+  steps:
+  - intent: restart
+  - action: action_restart

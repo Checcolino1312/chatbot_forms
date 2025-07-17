@@ -1,0 +1,190 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - ciao
+    - salve
+    - buongiorno
+    - buonasera
+    - hey
+    - ciao come va
+    - saluti
+    - ehilà
+    - buondì
+
+- intent: goodbye
+  examples: |
+    - arrivederci
+    - ciao ciao
+    - addio
+    - ci sentiamo
+    - a presto
+    - buona giornata
+    - buona serata
+    - grazie e ciao
+    - alla prossima
+
+- intent: affirm
+  examples: |
+    - sì
+    - si
+    - va bene
+    - ok
+    - d'accordo
+    - perfetto
+    - esatto
+    - corretto
+    - confermo
+    - certo
+
+- intent: deny
+  examples: |
+    - no
+    - non va bene
+    - negativo
+    - sbagliato
+    - non è corretto
+    - non confermo
+    - annulla
+
+- intent: book_restaurant
+  examples: |
+    - vorrei prenotare un tavolo
+    - voglio fare una prenotazione
+    - posso prenotare?
+    - prenotazione per favore
+    - tavolo per stasera
+    - prenotare un posto
+    - fare una prenotazione
+    - prenotazione ristorante
+    - tavolo per [2](number_of_guests) persone
+    - prenotazione per [4](number_of_guests) per [domenica](date)
+    - tavolo per [stasera alle 20](time)
+
+- intent: provide_name
+  examples: |
+    - [Mario Rossi](name)
+    - mi chiamo [Luca](name)
+    - sono [Anna](name)
+    - il mio nome è [Giovanni](name)
+    - [Francesca](name)
+    - [Paolo Bianchi](name)
+    - [Maria](name)
+    - [Alessandro](name)
+
+- intent: provide_email
+  examples: |
+    - mario.rossi@email.com
+    - [luca.verdi@gmail.com](email)
+    - la mia email è [anna@yahoo.it](email)
+    - [giovanni.test@hotmail.com](email)
+    - [francesca.bianchi@libero.it](email)
+    - [paolo123@gmail.com](email)
+
+- intent: provide_phone
+  examples: |
+    - [3401234567](phone)
+    - il mio numero è [3331234567](phone)
+    - [+39 340 123 4567](phone)
+    - [347-123-4567](phone)
+    - [02 12345678](phone)
+    - [340 123 4567](phone)
+
+- intent: provide_date
+  examples: |
+    - [15/12/2025](date)
+    - per [domani](date)
+    - [sabato](date)
+    - [questo sabato](date)
+    - [il 20 dicembre](date)
+    - [20/12/2025](date)
+    - [stasera](date)
+    - [dopodomani](date)
+
+- intent: provide_time
+  examples: |
+    - alle [20:00](time)
+    - [19:30](time)
+    - verso le [20](time)
+    - alle [otto di sera](time)
+    - [21:00](time)
+    - alle [sette e mezza](time)
+    - [18:30](time)
+
+- intent: provide_guests
+  examples: |
+    - per [2](number_of_guests) persone
+    - siamo in [4](number_of_guests)
+    - [3](number_of_guests) ospiti
+    - tavolo per [5](number_of_guests)
+    - [due](number_of_guests) persone
+    - [quattro](number_of_guests) persone
+    - [1](number_of_guests) persona
+
+- intent: stop
+  examples: |
+    - stop
+    - basta
+    - ferma
+    - annulla tutto
+    - voglio smettere
+    - interrompi
+
+- intent: restart
+  examples: |
+    - ricomincia
+    - restart
+    - riavvia
+    - ricominciamo
+    - ripartiamo
+
+regex:
+- regex: email_pattern
+  examples: |
+    - [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
+
+- regex: phone_pattern
+  examples: |
+    - \+?39?\s?[0-9]{10}|\+?39?\s?[0-9]{3}\s?[0-9]{3}\s?[0-9]{4}
+
+- regex: date_pattern
+  examples: |
+    - [0-3]?[0-9]\/[0-1]?[0-9]\/[0-9]{4}
+
+- regex: time_pattern
+  examples: |
+    - [0-2]?[0-9]:[0-5][0-9]
+
+lookup: names
+examples: |
+    - Mario
+    - Luigi
+    - Giuseppe
+    - Francesco
+    - Antonio
+    - Marco
+    - Andrea
+    - Alessandro
+    - Matteo
+    - Lorenzo
+    - Gabriele
+    - Mattia
+    - Nicola
+    - Riccardo
+    - Davide
+    - Giulia
+    - Chiara
+    - Francesca
+    - Federica
+    - Sara
+    - Martina
+    - Valentina
+    - Stefania
+    - Paola
+    - Daniela
+    - Anna
+    - Maria
+    - Elena
+    - Silvia
+    - Rosa

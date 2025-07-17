@@ -1,0 +1,108 @@
+version: "3.1"
+
+stories:
+
+- story: prenotazione ristorante completa
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: book_restaurant
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - slot_was_set:
+    - requested_slot: customer_name
+  - slot_was_set:
+    - customer_name: "Mario"
+  - slot_was_set:
+    - requested_slot: customer_email
+  - slot_was_set:
+    - customer_email: "mario@email.com"
+  - slot_was_set:
+    - requested_slot: customer_phone
+  - slot_was_set:
+    - customer_phone: "3401234567"
+  - slot_was_set:
+    - requested_slot: reservation_date
+  - slot_was_set:
+    - reservation_date: "20/12/2025"
+  - slot_was_set:
+    - requested_slot: reservation_time
+  - slot_was_set:
+    - reservation_time: "20:00"
+  - slot_was_set:
+    - requested_slot: number_of_guests
+  - slot_was_set:
+    - number_of_guests: "2"
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_reservation
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: prenotazione con interruzione
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: book_restaurant
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - intent: stop
+  - action: action_deactivate_loop
+  - active_loop: null
+
+- story: prenotazione con riavvio
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: book_restaurant
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - slot_was_set:
+    - requested_slot: customer_name
+  - intent: restart
+  - action: action_restart
+  - intent: book_restaurant
+  - action: restaurant_form
+  - active_loop: restaurant_form
+
+- story: saluto semplice
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: prenotazione diretta con informazioni
+  steps:
+  - intent: book_restaurant
+    entities:
+    - number_of_guests: "4"
+  - action: restaurant_form
+  - active_loop: restaurant_form
+  - slot_was_set:
+    - number_of_guests: "4"
+  - slot_was_set:
+    - requested_slot: customer_name
+  - slot_was_set:
+    - customer_name: "Luca"
+  - slot_was_set:
+    - requested_slot: customer_email
+  - slot_was_set:
+    - customer_email: "luca@test.com"
+  - slot_was_set:
+    - requested_slot: customer_phone
+  - slot_was_set:
+    - customer_phone: "3471234567"
+  - slot_was_set:
+    - requested_slot: reservation_date
+  - slot_was_set:
+    - reservation_date: "21/12/2025"
+  - slot_was_set:
+    - requested_slot: reservation_time
+  - slot_was_set:
+    - reservation_time: "19:30"
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_reservation
