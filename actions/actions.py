@@ -7,6 +7,9 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet, AllSlotsReset
 
+# Importa il database
+from database import ReservationDatabase
+
 
 class ValidateRestaurantForm(FormValidationAction):
     """Validazione personalizzata per il form di prenotazione ristorante"""
@@ -62,9 +65,19 @@ class ActionSubmitReservation(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
+        # Raccoglie tutti i dati della prenotazione
+        reservation_data = {
+            'customer_name': tracker.get_slot("customer_name"),
+            'customer_email': tracker.get_slot("customer_email"),
+            'customer_phone': tracker.get_slot("customer_phone"),
+            'reservation_date': tracker.get_slot("reservation_date"),
+            'reservation_time': tracker.get_slot("reservation_time"),
+            'number_of_guests': tracker.get_slot("number_of_guests")
+        }
+        
         # Simula controllo disponibilità
-        reservation_date = tracker.get_slot("reservation_date")
-        reservation_time = tracker.get_slot("reservation_time")
+        reservation_date = reservation_data['reservation_date']
+        reservation_time = reservation_data['reservation_time']
         
         # Lista di orari "occupati" per simulazione
         busy_slots = [
@@ -77,11 +90,35 @@ class ActionSubmitReservation(Action):
             dispatcher.utter_message(response="utter_restaurant_full")
             return [SlotSet("reservation_time", None)]
         
-        # Conferma prenotazione
-        dispatcher.utter_message(response="utter_reservation_confirmed")
-        
-        # Qui potresti aggiungere logica per salvare nel database
-        # save_reservation_to_db(tracker.slots)
+        # Salva la prenotazione nel database
+        try:
+            db = ReservationDatabase()
+            reservation_id = db.save_reservation(reservation_data)
+            
+            # Conferma prenotazione con ID
+            dispatcher.utter_message(
+                text=f"Perfetto {reservation_data['customer_name']}! La tua prenotazione è confermata:\n"
+                     f"📋 ID Prenotazione: #{reservation_id}\n"
+                     f"📅 Data: {reservation_data['reservation_date']}\n"
+                     f"🕐 Ora: {reservation_data['reservation_time']}\n"
+                     f"👥 Persone: {reservation_data['number_of_guests']}\n"
+                     f"📧 Email: {reservation_data['customer_email']}\n"
+                     f"📞 Telefono: {reservation_data['customer_phone']}\n\n"
+                     f"Conserva questo ID per eventuali modifiche. Grazie per aver scelto il Ristorante Bella Vista!"
+            )
+            
+            print(f"✅ PRENOTAZIONE SALVATA - ID: {reservation_id}")
+            print(f"   Nome: {reservation_data['customer_name']}")
+            print(f"   Data: {reservation_data['reservation_date']} alle {reservation_data['reservation_time']}")
+            print(f"   Ospiti: {reservation_data['number_of_guests']}")
+            print("-" * 50)
+            
+        except Exception as e:
+            print(f"❌ Errore nel salvare la prenotazione: {e}")
+            dispatcher.utter_message(
+                text="La prenotazione è stata confermata, ma si è verificato un problema tecnico. "
+                     "Contatta il ristorante per verificare."
+            )
         
         return []
 
